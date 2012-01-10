@@ -1,0 +1,67 @@
+# My approach for dotfiles is basically this:
+#   http://gmarik.info/blog/2010/05/02/tracking-dotfiles-with-git
+# ...with a bit of this thrown in:
+#   http://squaremasher.blogspot.com/2009/12/managing-dotfiles-with-git.html:
+
+# ignore all by default
+/*
+
+# now don't ignore any dotfiles because if one gets added I want to know about it
+!.*
+
+# and now here are the dotfiles I already know I don't care about
+.Private
+.VirtualBox/
+.Xauthority
+.adobe/
+.bash_history
+.bash_logout
+.byobu
+.cache/
+.cddb/
+.chef/
+.config/
+.dbus/
+.directory
+.dmrc
+.dvdcss/
+.ecryptfs
+.esd_auth
+.fontconfig/
+.gconfd/
+.gegl-0.0/
+.gimp-2.6/
+.gstreamer-0.10/
+.gtkrc-2.0-kde4
+.hellanzb/
+.httrack.ini
+.icedtea/
+.ipython/
+.kde/
+.lesshst
+.libreoffice/
+.local/
+.macromedia/
+.mozilla/
+.nvidia-settings-rc
+.pip/
+.pki/
+.profile
+.pulse-cookie
+.pulse/
+.recently-used
+.screenrc
+.sudo_as_admin_successful
+.swp
+.thumbnails/
+.tin/
+.vim/
+.viminfo
+.vimperator/
+.vimperatorrc
+.webex/
+.xsession-errors
+
+# also don't ignore some stuff that doesn't begin with a dot
+!aws
+
