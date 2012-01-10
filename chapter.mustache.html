@@ -1,0 +1,38 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.tablesorter.min.js"></script>
+
+    <script type="text/javascript">
+    $(function() {
+        $("#myTable").tablesorter({ widgets: ['zebra'] });
+    });
+    </script>
+
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+<body>
+<table id="myTable" class="tablesorter"> 
+<thead> 
+<tr> 
+    <th>Chapter</th> 
+    <th>Verse</th> 
+    <th>Text</th>
+</tr> 
+</thead> 
+<tbody> 
+    {{#verses}}
+    <tr> 
+        <td>{{chapter}}</td> 
+        <td>{{verse}}</td> 
+        <td>{{{verse_text}}}</td> 
+    </tr> 
+    {{/verses}}
+</tbody> 
+</table> 
+    
+
+</body>
+</html>
+
