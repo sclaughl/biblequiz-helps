@@ -32,7 +32,7 @@ def transform_to_dic(verses):
 def make_it_bold(verses_dic):
     ''' create a strong around first five words of each verse '''
     for verse in verses_dic['verses']:
-        verse['verse_text'] = "<strong>%s</strong> %s" % (' '.join(verse['verse_text'].split()[:5]), ' '.join(verse['verse_text'].split()[5:]))
+        verse['verse_text_modified'] = "<strong>%s</strong> %s" % (' '.join(verse['verse_text'].split()[:5]), ' '.join(verse['verse_text'].split()[5:]))
 
 
 def create_html_page_for_chapter(chapter):
