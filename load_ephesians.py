@@ -6,7 +6,7 @@ from BeautifulSoup import BeautifulSoup
 
 # configure logging
 log = logging.getLogger('ephesians_loader')
-log.setLevel(logging.INFO)
+log.setLevel(logging.DEBUG)
 log.addHandler(logging.StreamHandler()) # write log to stderr
 
 # configure database -- delete it if it exists

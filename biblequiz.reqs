@@ -1,0 +1,5 @@
+BeautifulSoup==3.2.0
+distribute==0.6.19
+ipython==0.12
+pystache==0.3.1
+wsgiref==0.1.2
