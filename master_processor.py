@@ -13,7 +13,7 @@ log = logging.getLogger('master_processor')
 log.setLevel(logging.DEBUG)
 log.addHandler(logging.StreamHandler())
 
-DB_FILE = os.path.join(os.getcwd(), 'ephesians.db')
+DB_FILE = os.path.join(os.getcwd(), 'colossians_philippians.db')
 
 ''' Create an html file that consists of a table
     where each row is a verse with the first five words in bold
@@ -22,7 +22,7 @@ DB_FILE = os.path.join(os.getcwd(), 'ephesians.db')
 def get_verses():
     conn = sqlite3.connect(DB_FILE)
     cur = conn.cursor()
-    cur.execute('select chapter, verse, verse_text from verses')
+    cur.execute('select book, chapter, verse, verse_text from verses')
     return cur.fetchall()
 
 def normalize(string):
@@ -52,7 +52,7 @@ def highlight_unique_phrases(verses_dic):
                 * otherwise add the next word and seach again  
             NOTE: we must ignore html, punctuation, and case when comparing '''
 
-        log.debug('evaluating eph %s:%s' % (verse['chapter'], verse['verse']))
+        log.debug('evaluating %s %s:%s' % (verse['book'], verse['chapter'], verse['verse']))
 
         # initialize control variable
         phrase = []
@@ -87,7 +87,6 @@ def highlight_unique_phrases(verses_dic):
 
 verses = get_verses()
 verses_dic = transform_to_dic(verses)
-import pdb; pdb.set_trace()
 make_it_bold(verses_dic)
 highlight_unique_phrases(verses_dic)
 template = open('chapter.mustache.html').read()

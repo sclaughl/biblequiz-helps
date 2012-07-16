@@ -64,7 +64,7 @@ def process_chapter(book, chapter, soup):
         c.close()
 
 for book_key in BOOKS.keys():
-    for chapter in range(1,4):
+    for chapter in range(1,5):
         soup = get_html_for_scripture(book_key, chapter)
         process_chapter(book_key, chapter, soup)
 

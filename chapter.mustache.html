@@ -14,10 +14,11 @@
     <link rel="stylesheet" href="css/highlight.css" type="text/css" />
 </head>
 <body>
-<h1>Ephesians</h1>
+<h1>Colossians & Philippians</h1>
 <table id="myTable" class="tablesorter"> 
 <thead> 
 <tr> 
+    <th>Book</th> 
     <th>Chapter</th> 
     <th>Verse</th> 
     <th>Text</th>
@@ -26,6 +27,7 @@
 <tbody> 
     {{#verses}}
     <tr> 
+        <td>{{book}}</td> 
         <td>{{chapter}}</td> 
         <td>{{verse}}</td> 
         <td>{{{verse_text_modified}}}</td> 

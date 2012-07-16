@@ -22,9 +22,9 @@ def get_verses(chapter):
 
 def transform_to_dic(verses):
     dic = { 'verses' : [] }
-    for chapter, verse, text in verses:
+    for book, chapter, verse, text in verses:
         dic['verses'].append(
-            {'chapter' : chapter, 'verse' : verse, 'verse_text' : text}
+            {'book': book, 'chapter' : chapter, 'verse' : verse, 'verse_text' : text}
         )
     return dic
 
@@ -48,6 +48,6 @@ def create_html_page_for_chapter(chapter):
     f.write(pystache.render(template, verses_dic))
     f.close()
 
-
-for chapter in range(1,7):
-    create_html_page_for_chapter(chapter)
+if __name__ == "main":
+    for chapter in range(1,7):
+        create_html_page_for_chapter(chapter)
