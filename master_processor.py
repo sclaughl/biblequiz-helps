@@ -13,7 +13,7 @@ log = logging.getLogger('master_processor')
 log.setLevel(logging.DEBUG)
 log.addHandler(logging.StreamHandler())
 
-DB_FILE = os.path.join(os.getcwd(), 'colossians_philippians.db')
+DB_FILE = os.path.join(os.getcwd(), 'romans.db')
 
 ''' Create an html file that consists of a table
     where each row is a verse with the first five words in bold
@@ -84,13 +84,13 @@ def highlight_unique_phrases(verses_dic):
             #verse['verse_text_modified'] = joined
             
 
-
-verses = get_verses()
-verses_dic = transform_to_dic(verses)
-make_it_bold(verses_dic)
-highlight_unique_phrases(verses_dic)
-template = open('chapter.mustache.html').read()
-html = pystache.render(template, verses_dic)
-f = codecs.open('artifacts/chapters-html/master.html', encoding='utf-8', mode='w')
-f.write(pystache.render(template, verses_dic))
-f.close()
+if __name__ == "__main__":
+    verses = get_verses()
+    verses_dic = transform_to_dic(verses)
+    make_it_bold(verses_dic)
+    highlight_unique_phrases(verses_dic)
+    template = open('chapter.mustache.html').read()
+    html = pystache.render(template, verses_dic)
+    f = codecs.open('artifacts/chapters-html/master.html', encoding='utf-8', mode='w')
+    f.write(pystache.render(template, verses_dic))
+    f.close()
