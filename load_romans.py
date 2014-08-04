@@ -77,7 +77,7 @@ def get_verse_spans_for_verse(verse_num, verse_spans):
        
 
 for book_key in BOOKS.keys():
-    for chapter in range(1,9):
+    for chapter in range(9,16):
         soup = get_html_for_scripture(book_key, chapter)
         process_chapter(book_key, chapter, soup)
 

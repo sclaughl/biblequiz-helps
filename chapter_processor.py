@@ -51,5 +51,5 @@ def create_html_page_for_chapter(chapter):
     f.close()
 
 if __name__ == "__main__":
-    for chapter in range(1,9):
+    for chapter in range(9,16):
         create_html_page_for_chapter(chapter)
