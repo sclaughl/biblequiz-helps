@@ -66,18 +66,26 @@ def get_soup_for_chapternum(chapter):
 def process_chapter(chapternum, soup):
     chapter_verses = extract_verses_from_soup(chapternum, soup)
     for idx, cv in enumerate(chapter_verses):
-        log.debug( "MT %s:%s %s" % (chapternum, idx+1, cv))
+        log.debug( "MT %s:%s %s" % (chapternum, idx, cv))
 
 def extract_verses_from_soup(chapternum, soup):
     text_verses = []
     #log.debug("finding spans that mark out verses")
     verses = soup.find_all(class_='versetext')
     #log.debug("found %r verse spans" % len(verses))
+    import pdb
     for verse in verses:
         accumulater = ''
-        for c in verse.children:
-            if (isinstance(c, NavigableString) and len(c.strip())>0 ):
-                accumulater += "%s " % c.strip()
+        for child in verse.children:
+            if isinstance(child, NavigableString):
+                if len(child.strip())>0:
+                    accumulater += "%s " % child.strip()
+            elif child.get('class') and child['class'][0] == 'WordsOfChrist':
+                #pdb.set_trace()
+                for con in child.contents:
+                    if isinstance(con, NavigableString):
+                        if len(con.strip())>0:
+                            accumulater += "%s " % con.strip()
         text_verses.append(accumulater.strip())
     return text_verses
 
@@ -115,6 +123,9 @@ def extract_verses_from_soup(chapternum, soup):
     #c.execute("insert into verses values ('matthew', ?, ?, ?)", (chapter, verse_num, verse_text))
     #conn.commit()
     #c.close()
+
+#soup = get_soup_for_chapternum(5)
+#process_chapter(5, soup)
 
 
 for chapternum in range(1,11):
