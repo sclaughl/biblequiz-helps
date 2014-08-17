@@ -5,9 +5,7 @@ import pystache
 import codecs
 import unicodedata
 
-from string import punctuation
-
-from chapter_processor import transform_to_dic, make_it_bold
+from string import punctuation, lstrip
 
 log = logging.getLogger('master_processor')
 log.setLevel(logging.DEBUG)
@@ -24,6 +22,30 @@ def get_verses():
     cur = conn.cursor()
     cur.execute('select book, chapter, verse, verse_text from verses')
     return cur.fetchall()
+
+def sanitize(s):
+    s = lstrip(s)
+    s = lstrip(s, '"')
+    s = lstrip(s)
+    s = lstrip(s, "'")
+    s = lstrip(s)
+    return s
+
+
+def transform_to_dic(verses):
+    dic = { 'verses' : [] }
+    for book, chapter, verse, text in verses:
+        dic['verses'].append(
+            {'book': book, 'chapter' : chapter, 'verse' : verse, 'verse_text' : sanitize(text)}
+        )
+    return dic
+
+
+def make_it_bold(verses_dic):
+    ''' create a strong around first five words of each verse '''
+    for verse in verses_dic['verses']:
+        verse['verse_text_modified'] = "<strong>%s</strong> %s" % (' '.join(verse['verse_text'].split()[:5]), ' '.join(verse['verse_text'].split()[5:]))
+
 
 def normalize(string):
     exclude = set(punctuation)
@@ -82,12 +104,13 @@ def highlight_unique_phrases(verses_dic):
             #joined += ' '.join(phrase_words)
             log.debug(verse['verse_text_modified'])
             #verse['verse_text_modified'] = joined
-            
+
 
 if __name__ == "__main__":
     verses = get_verses()
     import pdb; pdb.set_trace()
     verses_dic = transform_to_dic(verses)
+    log.debug(verses_dic)
     make_it_bold(verses_dic)
     highlight_unique_phrases(verses_dic)
     template = open('chapter.mustache.html').read()
