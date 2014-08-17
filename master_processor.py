@@ -23,7 +23,7 @@ def get_verses():
     cur.execute('select book, chapter, verse, verse_text from verses')
     return cur.fetchall()
 
-def sanitize(s):
+def strip_opening_quotes(s):
     s = lstrip(s)
     s = lstrip(s, '"')
     s = lstrip(s)
@@ -33,10 +33,10 @@ def sanitize(s):
 
 
 def transform_to_dic(verses):
-    dic = { 'verses' : [] }
+    dic = { 'book': 'The Gospel of Matthew', 'verses' : [] }
     for book, chapter, verse, text in verses:
         dic['verses'].append(
-            {'book': book, 'chapter' : chapter, 'verse' : verse, 'verse_text' : sanitize(text)}
+            {'book': book, 'chapter' : chapter, 'verse' : verse, 'verse_text' : strip_opening_quotes(text)}
         )
     return dic
 
@@ -44,7 +44,10 @@ def transform_to_dic(verses):
 def make_it_bold(verses_dic):
     ''' create a strong around first five words of each verse '''
     for verse in verses_dic['verses']:
-        verse['verse_text_modified'] = "<strong>%s</strong> %s" % (' '.join(verse['verse_text'].split()[:5]), ' '.join(verse['verse_text'].split()[5:]))
+        verse_text = verse['verse_text']
+        verse['first_five'] = verse_text.split()[:5]
+        verse['beyond_five'] = verse_text.split()[5:]
+        verse['verse_text_modified'] = "<strong>%s</strong> %s" % (' '.join(verse['first_five']), ' '.join(verse['beyond_five']))
 
 
 def normalize(string):
@@ -81,8 +84,6 @@ def highlight_unique_phrases(verses_dic):
         phrase_words = verse['verse_text'].split()
         phrase.append(phrase_words.pop(0))
 
-        log.debug('checking phrase %s' % phrase)
-
         # test control variable
         while another_found(' '.join(phrase), verse, verses_dic):
             # in this case the phrase wasn't unique
@@ -91,26 +92,28 @@ def highlight_unique_phrases(verses_dic):
             phrase.append(phrase_words.pop(0))
         else:
             # in this case the phrase was unique
-            # put a span around phrase (but inside strong)
+            # put a span around phrase
+            # if phrase is <= 5 words then span goes inside strong
+            # if phrase is > 5 words then span goes outside strong
             log.debug("|%s| is unique and needs a span around it" % ' '.join(phrase))
             # need to figure out how to use phrase to update verse_text_modified
             log.debug(verse['verse_text_modified'])
 
             joined = ' '.join(phrase)
             orig = verse['verse_text_modified']
-            verse['verse_text_modified'] = orig.replace(joined, "<span>%s</span>" % joined, 1)
-            #joined = joined.replace('<strong>', '<strong><span>')
-            #joined += '</span> '
-            #joined += ' '.join(phrase_words)
+            if len(phrase) <= 5:
+                verse['verse_text_modified'] = orig.replace(joined, "<span>%s</span>" % joined, 1)
+            else:
+                first_five = ' '.join(verse['first_five'])
+                unique_remainder = ' '.join(phrase[5:])
+                remainder = ' '.join(phrase_words)
+                verse['verse_text_modified'] = "<span><strong>%s</strong> %s</span> %s" % (first_five, unique_remainder, remainder)
             log.debug(verse['verse_text_modified'])
-            #verse['verse_text_modified'] = joined
 
 
 if __name__ == "__main__":
     verses = get_verses()
-    import pdb; pdb.set_trace()
     verses_dic = transform_to_dic(verses)
-    log.debug(verses_dic)
     make_it_bold(verses_dic)
     highlight_unique_phrases(verses_dic)
     template = open('chapter.mustache.html').read()
