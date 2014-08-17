@@ -13,7 +13,7 @@ log = logging.getLogger('master_processor')
 log.setLevel(logging.DEBUG)
 log.addHandler(logging.StreamHandler())
 
-DB_FILE = os.path.join(os.getcwd(), 'romans.db')
+DB_FILE = os.path.join(os.getcwd(), 'matthew.db')
 
 ''' Create an html file that consists of a table
     where each row is a verse with the first five words in bold
@@ -86,6 +86,7 @@ def highlight_unique_phrases(verses_dic):
 
 if __name__ == "__main__":
     verses = get_verses()
+    import pdb; pdb.set_trace()
     verses_dic = transform_to_dic(verses)
     make_it_bold(verses_dic)
     highlight_unique_phrases(verses_dic)

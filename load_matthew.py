@@ -58,7 +58,18 @@ def extract_verses_from_soup(chapternum, soup):
         text_verses.append(accumulater.strip())
     return text_verses
 
+def prune_chapter_1():
+    c = conn.cursor()
+    c.execute("delete from verses where chapter = 1 and verse < 18")
+    conn.commit()
+    c.close()
+
+    
+
 for chapternum in range(1,11):
     soup = get_soup_for_chapternum(chapternum)
     process_chapter(chapternum, soup)
+
+prune_chapter_1()
+
 

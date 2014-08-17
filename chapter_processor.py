@@ -21,6 +21,7 @@ def get_verses(chapter):
 
 
 def transform_to_dic(verses):
+    log.debug(verses)
     dic = { 'verses' : [] }
     for book, chapter, verse, text in verses:
         dic['verses'].append(
