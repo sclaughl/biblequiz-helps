@@ -11,7 +11,7 @@ log = logging.getLogger('master_processor')
 log.setLevel(logging.DEBUG)
 log.addHandler(logging.StreamHandler())
 
-DB_FILE = os.path.join(os.getcwd(), 'matthew.db')
+DB_FILE = os.path.join(os.getcwd(), 'matthew13to21.db')
 
 ''' Create an html file that consists of a table
     where each row is a verse with the first five words in bold
@@ -120,4 +120,5 @@ if __name__ == "__main__":
     html = pystache.render(template, verses_dic)
     f = codecs.open('artifacts/chapters-html/master.html', encoding='utf-8', mode='w')
     f.write(pystache.render(template, verses_dic))
+    log.debug('wrote verses to template -- DONE!')
     f.close()
